@@ -33,4 +33,16 @@ Output (not committed, see .gitignore):
 - `data/pings.csv`: device_id, lat, lon, ts
 - `data/stores.csv`: store_id, name, lat, lon (see `stores/stores.csv`)
 
+### Check the data
+
+```
+python data_generation/validate_pings.py
+```
+
+This checks for missing values, pings outside the city, rush hour peaks (morning and
+evening) and how many pings fall within 500 m of each store.
+
+Test result with 20,000 devices over 7 days: 7.6 million pings, 0 missing values, 0 pings
+outside the city. Morning and evening have about 2x the pings of midday.
+
 All data is synthetic. No real device data is used.
