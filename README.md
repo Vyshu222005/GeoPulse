@@ -45,4 +45,17 @@ evening) and how many pings fall within 500 m of each store.
 Test result with 20,000 devices over 7 days: 7.6 million pings, 0 missing values, 0 pings
 outside the city. Morning and evening have about 2x the pings of midday.
 
+## Week 1: Snowflake setup
+
+1. Create a free Snowflake trial account.
+2. Open a worksheet and run `snowflake/01_setup.sql`. It creates the warehouse
+   `GEOPULSE_WH`, the database `GEOPULSE` and the schemas `RAW`, `STAGING` and `MARTS`.
+3. Copy `.env.example` to `.env` and fill in your own account, user and password.
+   The `.env` file is ignored by git, so the password is never pushed.
+4. Test the connection:
+   ```
+   pip install -r requirements.txt
+   python snowflake/test_connection.py
+   ```
+
 All data is synthetic. No real device data is used.
