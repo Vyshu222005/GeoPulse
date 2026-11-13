@@ -58,4 +58,20 @@ outside the city. Morning and evening have about 2x the pings of midday.
    python snowflake/test_connection.py
    ```
 
+## Week 1: create the tables
+
+`snowflake/02_create_tables.sql` creates two tables in `GEOPULSE.RAW`:
+
+| Table | What it holds |
+|---|---|
+| `PINGS` | device_id, latitude, longitude, ping_ts and a `LOCATION` GEOGRAPHY point |
+| `STORES` | store details, a `LOCATION` point and a 500 m `CATCHMENT` GEOGRAPHY area |
+
+Run it (or any other SQL file) with:
+```
+python snowflake/run_sql.py snowflake/02_create_tables.sql
+```
+The file also inserts one test ping, checks it is about 78 m from Store A using
+`ST_DISTANCE` and `ST_DWITHIN`, and then deletes it.
+
 All data is synthetic. No real device data is used.
