@@ -1,0 +1,40 @@
+-- GeoPulse: Day 5 check the loaded data
+-- Run with:  python snowflake/run_sql.py snowflake/03_check_load.sql
+
+USE WAREHOUSE GEOPULSE_WH;
+USE DATABASE GEOPULSE;
+USE SCHEMA RAW;
+
+-- 1. Row counts (the pings file from Day 2 has 7,628,295 rows and the stores file has 10)
+SELECT 'PINGS' AS TABLE_NAME, COUNT(*) AS ROWS_LOADED FROM PINGS
+UNION ALL
+SELECT 'STORES', COUNT(*) FROM STORES;
+
+-- 2. Unique devices and the time range
+SELECT COUNT(DISTINCT DEVICE_ID) AS DEVICES,
+       MIN(PING_TS)              AS FIRST_PING,
+       MAX(PING_TS)              AS LAST_PING
+FROM PINGS;
+
+-- 3. Rows with a missing GEOGRAPHY point (should be 0)
+SELECT COUNT(*) AS PINGS_WITHOUT_LOCATION FROM PINGS WHERE LOCATION IS NULL;
+SELECT COUNT(*) AS STORES_WITHOUT_LOCATION FROM STORES WHERE LOCATION IS NULL;
+
+-- 4. The GEOGRAPHY point must match the latitude and longitude (should be 0 rows)
+SELECT COUNT(*) AS WRONG_POINTS
+FROM PINGS
+WHERE ABS(ST_Y(LOCATION) - LATITUDE) > 0.000001
+   OR ABS(ST_X(LOCATION) - LONGITUDE) > 0.000001;
+
+-- 5. Pings per hour: there should be peaks around 8 and 18
+SELECT HOUR(PING_TS) AS HOUR_OF_DAY, COUNT(*) AS PINGS
+FROM PINGS
+GROUP BY HOUR_OF_DAY
+ORDER BY HOUR_OF_DAY;
+
+-- 6. Pings within 500 m of Store A (MG Road)
+SELECT COUNT(*) AS PINGS_NEAR_STORE_A,
+       COUNT(DISTINCT P.DEVICE_ID) AS DEVICES_NEAR_STORE_A
+FROM PINGS P
+JOIN STORES S ON S.STORE_ID = 'S01'
+WHERE ST_DWITHIN(P.LOCATION, S.LOCATION, 500);

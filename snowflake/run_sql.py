@@ -19,6 +19,12 @@ def main():
         sql = f.read()
 
     load_dotenv()
+    missing = [k for k in ("SNOWFLAKE_ACCOUNT", "SNOWFLAKE_USER", "SNOWFLAKE_PASSWORD")
+               if not os.getenv(k) or os.getenv(k).startswith("your_")]
+    if missing:
+        print("Missing Snowflake login:", ", ".join(missing))
+        print("Copy .env.example to .env and fill in your account, user and password.")
+        return 1
     conn = snowflake.connector.connect(
         account=os.environ["SNOWFLAKE_ACCOUNT"],
         user=os.environ["SNOWFLAKE_USER"],

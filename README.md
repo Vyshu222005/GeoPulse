@@ -74,4 +74,21 @@ python snowflake/run_sql.py snowflake/02_create_tables.sql
 The file also inserts one test ping, checks it is about 78 m from Store A using
 `ST_DISTANCE` and `ST_DWITHIN`, and then deletes it.
 
+## Week 1: load the data into Snowflake
+
+```
+python snowflake/load_data.py
+python snowflake/run_sql.py snowflake/03_check_load.sql
+```
+
+`load_data.py` uploads the CSV files to a Snowflake stage with `PUT`, then uses `COPY INTO`
+to fill the `PINGS` and `STORES` tables. The `LOCATION` GEOGRAPHY column is built with
+`ST_MAKEPOINT(longitude, latitude)` while loading. The tables are emptied first, so the
+script can be run again without duplicates.
+
+`03_check_load.sql` checks the row counts, missing points, that the GEOGRAPHY points match
+the latitude and longitude, the rush hour peaks, and pings within 500 m of Store A.
+
+The store `CATCHMENT` column stays empty for now. The 500 m circles are made in Week 2.
+
 All data is synthetic. No real device data is used.
