@@ -17,8 +17,13 @@ import sys
 import time
 from pathlib import Path
 
+import warnings
+
 import snowflake.connector
 from dotenv import load_dotenv
+
+# Hide a long harmless FutureWarning printed by the Snowflake connector
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 FILE_FORMAT_SQL = """
 CREATE OR REPLACE FILE FORMAT GEOPULSE.RAW.CSV_FORMAT

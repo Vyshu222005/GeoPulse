@@ -2,8 +2,13 @@
 import os
 import sys
 
+import warnings
+
 import snowflake.connector
 from dotenv import load_dotenv
+
+# Hide a long harmless FutureWarning printed by the Snowflake connector
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 REQUIRED = [
     "SNOWFLAKE_ACCOUNT",

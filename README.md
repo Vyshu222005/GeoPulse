@@ -91,4 +91,15 @@ the latitude and longitude, the rush hour peaks, and pings within 500 m of Store
 
 The store `CATCHMENT` column stays empty for now. The 500 m circles are made in Week 2.
 
+## Week 1: data quality checks
+
+```
+python snowflake/run_sql.py snowflake/04_data_quality.sql
+```
+
+Checks for duplicate pings, pings outside the city, pings per device, weekday against
+weekend, rush hour against midday, and pings and devices within 500 m of all 10 stores.
+The results are in `docs/week1_data_quality_report.md`. One issue was found (4,967
+duplicate pings, 0.07%). It will be removed in the dbt staging model in Week 2.
+
 All data is synthetic. No real device data is used.
