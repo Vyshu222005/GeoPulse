@@ -102,4 +102,13 @@ weekend, rush hour against midday, and pings and devices within 500 m of all 10 
 The results are in `docs/week1_data_quality_report.md`. One issue was found (4,967
 duplicate pings, 0.07%). It will be removed in the dbt staging model in Week 2.
 
+## Week 2: PySpark and Apache Sedona
+
+Spatial joins on millions of pings use Spark with Sedona. Setup guide:
+`docs/week2_spark_setup.md` (install Java 17, then `pip install -r requirements-spark.txt`).
+
+```
+python spark/test_sedona.py
+```
+
 All data is synthetic. No real device data is used.
