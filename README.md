@@ -111,4 +111,19 @@ Spatial joins on millions of pings use Spark with Sedona. Setup guide:
 python spark/test_sedona.py
 ```
 
+## Week 2: 500 m catchment circles
+
+A catchment area is the zone around a store where visitors are counted.
+
+```
+python spatial/make_catchments.py      # draws a 500 m circle around each store
+python spatial/check_catchments.py     # counts pings inside each circle
+python snowflake/load_catchments.py    # saves the circles in STORES.CATCHMENT
+```
+
+Each circle is a 64-point polygon saved as WKT in `stores/store_catchments.csv`. All corners
+are exactly 500 m from the store. The pings inside the polygons are about 0.1% fewer than
+the plain 500 m distance counts, because a 64-sided shape is slightly smaller than a perfect
+circle.
+
 All data is synthetic. No real device data is used.
