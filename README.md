@@ -126,4 +126,19 @@ are exactly 500 m from the store. The pings inside the polygons are about 0.1% f
 the plain 500 m distance counts, because a 64-sided shape is slightly smaller than a perfect
 circle.
 
+## Week 2: spatial join with Sedona
+
+```
+python spark/spatial_join.py
+```
+
+Reads all pings, builds a point for each (`ST_Point`), and joins them to the store circles
+with `ST_Contains`. It prints which join Spark used (it must be a spatial join and not a slow
+nested loop), the pings and unique devices for each store, and saves
+`data/pings_in_catchments.csv`. Use `--limit` and `--driver-memory` for the memory test.
+
+Status: the code is written. Running it needs Java 17 and, on Windows, `winutils.exe`
+(see `docs/week2_spark_setup.md`). The same polygon counts were already checked in plain
+Python with `spatial/check_catchments.py`, which the Spark result should match.
+
 All data is synthetic. No real device data is used.

@@ -6,3 +6,4 @@ data/*.parquet
 node_modules/
 .env
 *.log
+hadoop/
