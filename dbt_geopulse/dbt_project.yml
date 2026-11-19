@@ -1,0 +1,22 @@
+name: geopulse
+version: "1.0.0"
+config-version: 2
+profile: geopulse
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  catchment_radius_m: 500   # catchment area around each store, in meters
+
+models:
+  geopulse:
+    staging:
+      +schema: STAGING      # cleaned data
+      +materialized: view
+    marts:
+      +schema: MARTS        # final tables for the dashboard
+      +materialized: table

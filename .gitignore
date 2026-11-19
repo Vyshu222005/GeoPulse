@@ -7,3 +7,7 @@ node_modules/
 .env
 *.log
 hadoop/
+.venv-dbt/
+dbt_geopulse/target/
+dbt_geopulse/logs/
+dbt_geopulse/dbt_packages/

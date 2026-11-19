@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw data loaded into Snowflake by snowflake/load_data.py
+    database: GEOPULSE
+    schema: RAW
+    tables:
+      - name: pings
+        description: Anonymized mobile GPS pings (one row per ping)
+        columns:
+          - name: device_id
+            tests: [not_null]
+          - name: ping_ts
+            tests: [not_null]
+          - name: location
+            description: GEOGRAPHY point built from latitude and longitude
+            tests: [not_null]
+      - name: stores
+        description: The 10 store locations
+        columns:
+          - name: store_id
+            tests: [not_null, unique]

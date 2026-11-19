@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_pings
+    description: Pings with duplicates removed, plus date, hour and weekend columns.
+    columns:
+      - name: device_id
+        tests: [not_null]
+      - name: ping_hour
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+                quote: false
+  - name: stg_stores
+    description: Store locations with the catchment radius.
+    columns:
+      - name: store_id
+        tests: [not_null, unique]

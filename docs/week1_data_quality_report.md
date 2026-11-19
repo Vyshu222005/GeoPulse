@@ -51,6 +51,10 @@ unique visitor counts, which are the main footfall metric.
 Plan: keep the raw table as it is (raw data should not be changed) and remove duplicates in
 the dbt staging model in Week 2 with `ROW_NUMBER() OVER (PARTITION BY device_id, ping_ts)`.
 
+Resolved (19 Nov): the dbt model `stg_pings` removes them. The raw table has 7,628,295 rows
+and `stg_pings` has 7,623,252, so 5,043 duplicate rows were removed (some groups had more
+than two copies). The dbt test `assert_no_duplicate_pings` passes.
+
 ## Other notes
 
 - Weekdays and weekends have the same number of pings per day (about 1.09 million). This is

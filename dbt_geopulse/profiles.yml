@@ -1,0 +1,15 @@
+# Connection to Snowflake. No password is stored here: the values come from the
+# environment variables, which are loaded from the .env file (see README).
+geopulse:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'ACCOUNTADMIN') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'GEOPULSE_WH') }}"
+      database: GEOPULSE
+      schema: STAGING
+      threads: 4

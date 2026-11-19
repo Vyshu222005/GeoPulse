@@ -141,4 +141,32 @@ Status: the code is written. Running it needs Java 17 and, on Windows, `winutils
 (see `docs/week2_spark_setup.md`). The same polygon counts were already checked in plain
 Python with `spatial/check_catchments.py`, which the Spark result should match.
 
+## Week 2: dbt (data modeling inside Snowflake)
+
+dbt runs in its own virtual environment so it does not clash with the other scripts:
+
+```
+python -m venv .venv-dbt
+.venv-dbt\Scripts\pip install dbt-core==1.12.7 dbt-snowflake==1.12.5 "python-dotenv[cli]"
+```
+
+Run it from the `dbt_geopulse` folder. `dotenv` loads the login from the `.env` file:
+
+```
+cd dbt_geopulse
+..\.venv-dbt\Scripts\dotenv -f ..\.env run -- ..\.venv-dbt\Scripts\dbt debug --profiles-dir .
+..\.venv-dbt\Scripts\dotenv -f ..\.env run -- ..\.venv-dbt\Scripts\dbt run --profiles-dir .
+..\.venv-dbt\Scripts\dotenv -f ..\.env run -- ..\.venv-dbt\Scripts\dbt test --profiles-dir .
+```
+
+| Model | Schema | What it does |
+|---|---|---|
+| `stg_pings` | STAGING (table) | Removes duplicate pings, adds date, hour and weekend columns |
+| `stg_stores` | STAGING (view) | Store list with the 500 m catchment radius |
+
+Result: `stg_pings` has 7,623,252 rows, which is 5,043 duplicate rows removed from the
+7,628,295 raw rows. All 11 dbt tests pass (not null, unique, hours 0 to 23, no duplicates).
+
+The hourly footfall model (`MARTS` schema) comes next.
+
 All data is synthetic. No real device data is used.
