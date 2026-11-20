@@ -167,6 +167,24 @@ cd dbt_geopulse
 Result: `stg_pings` has 7,623,252 rows, which is 5,043 duplicate rows removed from the
 7,628,295 raw rows. All 11 dbt tests pass (not null, unique, hours 0 to 23, no duplicates).
 
-The hourly footfall model (`MARTS` schema) comes next.
+### Footfall models
+
+| Model | Schema | What it does |
+|---|---|---|
+| `int_store_visits` | STAGING (table) | The spatial join: every ping within 500 m of a store (273,196 rows), using `ST_DWITHIN` |
+| `fct_store_hourly_visits` | MARTS (table) | Unique visitors and pings for each store, date and hour. 1,680 rows (10 stores x 7 days x 24 hours), with 0 for hours without visitors |
+| `fct_store_hourly_profile` | MARTS (table) | Average visitors for each store and hour, on weekdays and weekends (480 rows) |
+
+Data integrity tests (24 in total, all passing) include: one row per store, date and hour; a
+complete grid with no missing hours; unique visitors never above pings; no ping farther
+than 500 m from its store; and the morning (8:00) and evening (18:00) peaks being at least
+1.5x midday (13:00). Citywide on weekdays: 195 visitors per store at 8:00, 182 at 18:00,
+98 at 13:00 and 53 at 3:00.
+
+Store A (MG Road) shows the commuter pattern clearly: about 330 visitors per hour at midday,
+but 633 at 9:00 and 650 at 17:00.
+
+Lesson learned: a first version left out the hours with no visitors, which made midday look
+busier than it was. The test for rush hour peaks caught it, and the model now includes zero rows.
 
 All data is synthetic. No real device data is used.

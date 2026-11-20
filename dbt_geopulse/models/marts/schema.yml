@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fct_store_hourly_visits
+    description: Unique visitors and pings for each store, date and hour.
+    columns:
+      - name: store_id
+        tests: [not_null]
+      - name: ping_hour
+        tests: [not_null]
+      - name: unique_visitors
+        tests: [not_null]
+  - name: fct_store_hourly_profile
+    description: Average visitors for each store and hour on weekdays and weekends.
+    columns:
+      - name: store_id
+        tests: [not_null]
+      - name: avg_unique_visitors
+        tests: [not_null]

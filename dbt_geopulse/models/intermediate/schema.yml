@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: int_store_visits
+    description: One row for each ping inside a store catchment (the spatial join result).
+    columns:
+      - name: store_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_stores')
+                field: store_id
+      - name: device_id
+        tests: [not_null]
+      - name: distance_m
+        description: Distance from the store in meters (never more than the radius).

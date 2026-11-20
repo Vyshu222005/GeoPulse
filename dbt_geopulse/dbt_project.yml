@@ -17,6 +17,9 @@ models:
     staging:
       +schema: STAGING      # cleaned data
       +materialized: view
+    intermediate:
+      +schema: STAGING      # joined data, not shown on the dashboard
+      +materialized: table
     marts:
       +schema: MARTS        # final tables for the dashboard
       +materialized: table
